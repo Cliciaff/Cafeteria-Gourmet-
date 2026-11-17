@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expresso Três Corações</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background:
+                linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+                url("{{ url_for('static', filename='imagens/tela_inicial.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .conteudo {
+            color: white;
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 55px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px black;
+        }
+
+        .botao {
+            display: inline-block;
+            padding: 18px 30px;
+            background: #6b3f28;
+            color: white;
+            text-decoration: none;
+            border-radius: 40px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .botao:hover {
+            background: #8b5a3c;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="conteudo">
+        <h1>Expresso Três Corações</h1>
+
+        <a href="{{ url_for('cardapio') }}" class="botao">
+            Iniciar pedido ➜
+        </a>
+    </main>
+
+</body>
+</html>

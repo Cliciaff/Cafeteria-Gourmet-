@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento - Cafeteria Gourmet</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5eee5;
+            color: #4b3024;
+            margin: 0;
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        .aviso {
+            background: #fff3cd;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .produto {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .total {
+            text-align: right;
+            font-size: 22px;
+            font-weight: bold;
+            margin: 25px 0;
+        }
+
+        .opcao {
+            display: block;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .opcao:hover {
+            background: #f8f1e9;
+        }
+
+        #campoDinheiro {
+            display: none;
+            margin-top: 20px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #6b422f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 25px;
+        }
+
+        button:hover {
+            background: #4b3024;
+        }
+
+        a {
+            color: #6b422f;
+            text-decoration: none;
+        }
+
+        .voltar {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Finalizar pedido</h1>
+
+    <div class="aviso">
+        <strong>SIMULAÇÃO ACADÊMICA</strong><br>
+        Nenhum pagamento real será realizado.
+    </div>
+
+    <h2>Resumo do pedido</h2>
+
+    {% for item in itens %}
+    <div class="produto">
+        <div>
+            <strong>{{ item.nome }}</strong><br>
+            Quantidade: {{ item.quantidade }}
+        </div>
+
+        <strong>
+            R$ {{ "%.2f"|format((item.preco|float) * (item.quantidade|int)) }}
+        </strong>
+    </div>
+    {% endfor %}
+
+    <div class="total">
+        Total: R$ {{ "%.2f"|format(total|float) }}
+    </div>
+
+    <h2>Escolha a forma de pagamento</h2>
+
+    <form method="POST" action="{{ url_for('pagamento') }}">
+
+        <label class="opcao">
+            <input type="radio" name="forma_pagamento"
+                   value="PIX" required>
+            PIX (simulação)
+        </label>
+
+        <label class="opcao">
+            <input type="radio" name="forma_pagamento"
+                   value="DINHEIRO">
+            Dinheiro
+        </label>
+
+        <label class="opcao">
+            <input type="radio" name="forma_pagamento"
+                   value="DEBITO">
+            Cartão de débito (simulação)
+        </label>
+
+        <label class="opcao">
+            <input type="radio" name="forma_pagamento"
+                   value="CREDITO">
+            Cartão de crédito (simulação)
+        </label>
+
+        <label class="opcao">
+            <input type="radio" name="forma_pagamento"
+                   value="VOUCHER">
+            Voucher (simulação)
+        </label>
+
+        <div id="campoDinheiro">
+            <label for="valor_recebido">
+                Valor recebido em dinheiro (R$):
+            </label>
+
+            <input
+                type="number"
+                id="valor_recebido"
+                name="valor_recebido"
+                min="0"
+                step="0.01"
+                placeholder="Ex.: 20.00"
+            >
+        </div>
+
+        <button type="submit">
+            Confirmar pedido
+        </button>
+
+    </form>
+
+    <a class="voltar" href="{{ url_for('carrinho') }}">
+        Voltar ao carrinho
+    </a>
+
+</div>
+
+<script>
+    const opcoes = document.querySelectorAll(
+        'input[name="forma_pagamento"]'
+    );
+
+    const campoDinheiro = document.getElementById("campoDinheiro");
+    const valorRecebido = document.getElementById("valor_recebido");
+
+    opcoes.forEach(opcao => {
+        opcao.addEventListener("change", function () {
+            const dinheiro = this.value === "DINHEIRO";
+
+            campoDinheiro.style.display = dinheiro ? "block" : "none";
+            valorRecebido.required = dinheiro;
+        });
+    });
+</script>
+
+</body>
+</html>

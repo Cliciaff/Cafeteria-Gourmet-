@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio - Cafeteria Gourmet</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f3ee;
+            color: #3d2b1f;
+            margin: 0;
+            padding: 25px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #6b4226;
+        }
+
+        .menu {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 25px;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.menu a {
+    display: inline-block;
+    background: #754c24;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 7px;
+    text-decoration: none;
+    margin: 0 0 0 10px;
+}
+
+.menu a:hover {
+    background: #50321c;
+}
+            
+        }
+
+        a {
+            color: #754c24;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px;
+        }
+
+        .pesquisa {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            width: 260px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            padding: 11px 16px;
+            background: #754c24;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #50321c;
+        }
+
+        .produtos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .produto {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .produto h2 {
+            color: #754c24;
+            font-size: 21px;
+        }
+
+        .preco {
+            font-size: 20px;
+            font-weight: bold;
+            color: #347344;
+        }
+
+        .estoque {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .mensagem {
+            text-align: center;
+            padding: 12px;
+            margin: 10px auto;
+            max-width: 600px;
+            background: #eee5d9;
+            border-radius: 6px;
+        }
+
+        .adicionar {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .sem-produtos {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>☕ Cafeteria Gourmet</h1>
+        <p>Conheça nosso cardápio</p>
+    </header>
+
+    <nav class="menu">
+        <a href="{{ url_for('cardapio') }}">Cardápio</a>
+        <a href="{{ url_for('carrinho') }}">Meu Carrinho</a>
+    </nav>
+
+    {% with mensagens = get_flashed_messages() %}
+        {% if mensagens %}
+            {% for mensagem in mensagens %}
+                <div class="mensagem">
+                    {{ mensagem }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section class="pesquisa">
+        <form method="GET" action="{{ url_for('cardapio') }}">
+            <input
+                type="text"
+                name="q"
+                placeholder="Pesquisar produto..."
+                value="{{ pesquisa }}"
+            >
+
+            <button type="submit">Pesquisar</button>
+        </form>
+    </section>
+
+    <main class="produtos">
+
+        {% if produtos %}
+
+            {% for produto in produtos %}
+
+                <article class="produto">
+
+                    <h2>{{ produto.nome }}</h2>
+
+                    <p>{{ produto.descricao or 'Produto da casa.' }}</p>
+
+                    <p class="preco">
+                        R$ {{ "%.2f"|format(produto.preco)|replace(".", ",") }}
+                    </p>
+
+                    <p class="estoque">
+                        Estoque: {{ produto.quantidade_estoque }}
+                        {{ produto.unidade_medida or 'UN' }}
+                    </p>
+
+                    <form
+                        method="POST"
+                        action="{{ url_for('adicionar', produto_id=produto.id) }}"
+                    >
+                        <button type="submit" class="adicionar">
+                            Adicionar ao carrinho
+                        </button>
+                    </form>
+
+                </article>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="sem-produtos">
+                <h2>Nenhum produto encontrado.</h2>
+                <p>Verifique sua pesquisa ou tente novamente.</p>
+            </div>
+
+        {% endif %}
+
+    </main>
+
+</body>
+</html>

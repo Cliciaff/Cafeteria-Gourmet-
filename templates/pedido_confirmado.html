@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido confirmado | Expresso Três Corações</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f2ec;
+            color: #3b2921;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .painel {
+            background: white;
+            max-width: 550px;
+            width: 100%;
+            padding: 35px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            color: #356b45;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin: 12px 0;
+            font-size: 17px;
+        }
+
+        .botao {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 13px 22px;
+            background: #795238;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+
+        .aviso {
+            background: #fff3d8;
+            padding: 12px;
+            border-radius: 7px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="painel">
+
+        <h1>✓ Pedido registrado!</h1>
+
+        <p>Obrigado por comprar conosco.</p>
+
+        <p>
+            <strong>Número do pedido:</strong>
+            {{ pedido_id }}
+        </p>
+
+        <p>
+            <strong>Forma de pagamento:</strong>
+            {{ forma_pagamento }}
+        </p>
+
+        <p>
+            <strong>Total:</strong>
+            R$ {{ "%.2f"|format(total)|replace(".", ",") }}
+        </p>
+
+        {% if forma_pagamento == "Dinheiro" %}
+            <p>
+                <strong>Valor recebido:</strong>
+                R$ {{ "%.2f"|format(valor_recebido)|replace(".", ",") }}
+            </p>
+
+            <p>
+                <strong>Troco:</strong>
+                R$ {{ "%.2f"|format(troco)|replace(".", ",") }}
+            </p>
+        {% endif %}
+
+        <div class="aviso">
+            Pedido registrado no sistema. O pagamento ainda precisa ser confirmado.
+        </div>
+
+        <a href="{{ url_for('cardapio') }}" class="botao">
+            Voltar ao cardápio
+        </a>
+
+    </main>
+
+</body>
+</html>

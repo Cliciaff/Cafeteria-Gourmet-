@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Expresso Três Corações</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background-image:
+                linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+                url("{{ url_for('static', filename='imagens/tela_inicial.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .conteudo {
+            color: white;
+            padding: 30px;
+        }
+
+        .conteudo h1 {
+            font-size: clamp(32px, 6vw, 60px);
+            margin-bottom: 18px;
+            text-shadow: 2px 2px 5px #000;
+        }
+
+        .conteudo p {
+            font-size: 20px;
+            margin-bottom: 35px;
+            text-shadow: 1px 1px 4px #000;
+        }
+
+        .botao-iniciar {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 17px 30px;
+            border: none;
+            border-radius: 50px;
+            background-color: #6b3f28;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .botao-iniciar:hover {
+            background-color: #8b5a3c;
+            transform: scale(1.05);
+        }
+
+        .seta {
+            font-size: 27px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="conteudo">
+
+        <h1>Expresso Três Corações</h1>
+
+        <p>Seu momento especial começa aqui.</p>
+
+        <a href="{{ url_for('cardapio') }}" class="botao-iniciar">
+            Iniciar pedido
+            <span class="seta">➜</span>
+        </a>
+
+    </main>
+
+</body>
+</html>
